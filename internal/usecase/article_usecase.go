@@ -1,32 +1,41 @@
 package usecase
 
 import (
-	"go-clean-architecture/internal/domain"
+	. "go-clean-architecture/internal/domain"
+	. "go-clean-architecture/internal/repository/mysql"
 )
 
-type articleUseCase struct {
-	articleRepo domain.ArticleRepository
+type ArticleUseCase interface {
+	Create(article *Article) (*Article, error)
+	GetById(title string) (res *Article, err error)
+	GetAll() (res []*Article, err error)
+	Update(title string, article *Article) (*Article, error)
+	Delete(title string) error
 }
 
-func NewArticleUseCase(repo domain.ArticleRepository) domain.ArticleUseCase {
+type articleUseCase struct {
+	articleRepo ArticleRepository
+}
+
+func NewArticleUseCase(repo ArticleRepository) ArticleUseCase {
 	return &articleUseCase{
 		articleRepo: repo,
 	}
 }
 
-func (repo *articleUseCase) Create(article *domain.Article) (*domain.Article, error) {
+func (repo *articleUseCase) Create(article *Article) (*Article, error) {
 	return repo.articleRepo.Create(article)
 }
 
-func (repo *articleUseCase) GetById(title string) (*domain.Article, error) {
+func (repo *articleUseCase) GetById(title string) (*Article, error) {
 	res, err := repo.articleRepo.GetById(title)
 	return res, err
 }
-func (repo *articleUseCase) GetAll() ([]*domain.Article, error) {
+func (repo *articleUseCase) GetAll() ([]*Article, error) {
 	return repo.articleRepo.GetAll()
 }
 
-func (repo *articleUseCase) Update(title string, article *domain.Article) (*domain.Article, error) {
+func (repo *articleUseCase) Update(title string, article *Article) (*Article, error) {
 	return repo.articleRepo.Update(title, article)
 }
 

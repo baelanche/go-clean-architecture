@@ -18,19 +18,3 @@ func NewArticle(title string, body string, userName string, createdAt string, up
 	}
 	return article
 }
-
-type ArticleRepository interface {
-	Create(article *Article) (*Article, error)
-	GetById(title string) (*Article, error)
-	GetAll() (res []*Article, err error)
-	Update(title string, article *Article) (*Article, error)
-	Delete(title string) error
-}
-
-type ArticleUseCase interface {
-	Create(article *Article) (*Article, error)
-	GetById(title string) (res *Article, err error)
-	GetAll() (res []*Article, err error)
-	Update(title string, article *Article) (*Article, error)
-	Delete(title string) error
-}

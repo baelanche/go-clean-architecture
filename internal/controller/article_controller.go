@@ -5,16 +5,17 @@ import (
 	"fmt"
 	"net/http"
 
-	"go-clean-architecture/internal/domain"
+	. "go-clean-architecture/internal/domain"
+	. "go-clean-architecture/internal/usecase"
 
 	"github.com/gorilla/mux"
 )
 
 type ArticleController struct {
-	useCase domain.ArticleUseCase
+	useCase ArticleUseCase
 }
 
-func NewArticleController(router *mux.Router, us domain.ArticleUseCase) {
+func NewArticleController(router *mux.Router, us ArticleUseCase) {
 	controller := ArticleController{
 		useCase: us,
 	}
@@ -26,7 +27,7 @@ func NewArticleController(router *mux.Router, us domain.ArticleUseCase) {
 }
 
 func (c *ArticleController) CreateArticle(w http.ResponseWriter, r *http.Request) {
-	var article domain.Article
+	var article Article
 	err := json.NewDecoder(r.Body).Decode(&article)
 	if err != nil {
 		http.Error(w, "Error decoding JSON", http.StatusBadRequest)
