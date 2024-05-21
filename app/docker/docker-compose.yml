@@ -1,0 +1,40 @@
+services:
+  db:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password --init-file /data/application/init.sql
+    volumes:
+      - ../../test/mock/init.sql:/data/application/init.sql
+    restart: always
+    container_name: db-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: testpassword
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testpassword
+    ports:
+      - "3306:3306"
+    networks:
+      - gonet
+  app:
+    image: myapp
+    build:
+      context: ../../
+      dockerfile: ./app/docker/Dockerfile
+    restart: always
+    container_name: go-app
+    environment:
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testpassword
+      MYSQL_HOST: db-mysql
+      MYSQL_PORT: 3306
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - gonet
+
+networks:
+  gonet:
+    driver: bridge
