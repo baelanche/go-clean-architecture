@@ -12,7 +12,7 @@ services:
       MYSQL_USER: testuser
       MYSQL_PASSWORD: testpassword
     ports:
-      - "3306:3306"
+      - "3307:3306"
     networks:
       - gonet
   app:

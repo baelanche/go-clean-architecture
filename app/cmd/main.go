@@ -10,6 +10,8 @@ import (
 	_articleController "go-clean-architecture/internal/controller"
 	_articleUseCase "go-clean-architecture/internal/usecase"
 
+	httpSwagger "github.com/swaggo/http-swagger"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
@@ -22,6 +24,11 @@ var (
 	dbPort = os.Getenv("MYSQL_PORT")
 )
 
+// @title go-clean-architecture
+// @version 0.0.1
+// @description go-clean-architecture
+// @host localhost:8080
+// @basePath /api
 func main() {
 	router := mux.NewRouter()
 
@@ -33,17 +40,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	err = db.Ping()
-	if err != nil {
-		fmt.Println("Failed to ping MySQL:", err)
-		os.Exit(1)
-	}
-
 	defer db.Close()
 
 	articleRepository := mysql.NewArticleMySqlRepository(db)
 	articleUseCase := _articleUseCase.NewArticleUseCase(articleRepository)
 	_articleController.NewArticleController(router, articleUseCase)
+
+	router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 
 	fmt.Println("listening localhost:8080")
 	err = http.ListenAndServe(":8080", router)
