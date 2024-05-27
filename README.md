@@ -1,4 +1,28 @@
+### Directory
+
+```
+project
+- app
+ - cmd
+ - docker
+- docs
+- internal
+ - controller
+ - domain
+ - repository
+ - usecase
+- test
+ - mock
+ - usecase
+```
+
+### Layer
+
+1. handler(=controller)
+2. usecase
+3. repository
+
 ### RUN
 ```sh
-docker-compose -f ./app/docker/docker-compose.yml up
+./start.sh
 ```
