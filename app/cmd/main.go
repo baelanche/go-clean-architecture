@@ -32,7 +32,7 @@ var (
 func main() {
 	router := mux.NewRouter()
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset-utf8mb4&parseTime=true", dbUser, dbPass, dbHost, dbPort, dbName)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", dbUser, dbPass, dbHost, dbPort, dbName)
 
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {

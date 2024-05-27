@@ -36,7 +36,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controller.ArticleSwag"
+                            "$ref": "#/definitions/domain.Article"
                         }
                     }
                 ],
@@ -44,7 +44,77 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/controller.ArticleSwag"
+                            "$ref": "#/definitions/domain.Article"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/article/{title}": {
+            "get": {
+                "description": "단일 Article 을 조회합니다.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Article"
+                ],
+                "summary": "단일 Article 조회",
+                "operationId": "get-article",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "조회할 Article 제목",
+                        "name": "title",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Article"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Article 을 수정합니다.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Article"
+                ],
+                "summary": "Article 수정",
+                "operationId": "update-article",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "수정할 Article 제목",
+                        "name": "title",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "수정할 Article 정보",
+                        "name": "article",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.Article"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -81,36 +151,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/article/{title}": {
-            "get": {
-                "description": "단일 Article 을 조회합니다.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Article"
-                ],
-                "summary": "단일 Article 조회",
-                "operationId": "get-article",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "조회할 Article 제목",
-                        "name": "title",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controller.ArticleSwag"
-                        }
-                    }
-                }
-            }
-        },
         "/api/articles": {
             "get": {
                 "description": "Article 리스트를 조회합니다.",
@@ -128,7 +168,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/controller.ArticleSwag"
+                                "$ref": "#/definitions/domain.Article"
                             }
                         }
                     }
@@ -137,7 +177,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "controller.ArticleSwag": {
+        "domain.Article": {
             "type": "object",
             "properties": {
                 "body": {

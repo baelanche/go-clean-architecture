@@ -60,8 +60,15 @@ func (repo *ArticleMySqlRepository) GetById(title string) (*Article, error) {
 	if err != nil {
 		return nil, err
 	}
-	for rows.Next() {
-		err = rows.Scan(&article.Title, &article.Body, &article.UserName, &article.CreatedAt, &article.UpdatedAt)
+	defer rows.Close()
+
+	if !rows.Next() {
+		return nil, nil
+	}
+
+	err = rows.Scan(&article.Title, &article.Body, &article.UserName, &article.CreatedAt, &article.UpdatedAt)
+	if err != nil {
+		return nil, err
 	}
 
 	return &article, nil
@@ -77,6 +84,8 @@ func (repo *ArticleMySqlRepository) GetAll() (res []*Article, err error) {
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
+
 	for rows.Next() {
 		var article Article
 		err = rows.Scan(&article.Title, &article.Body, &article.UserName, &article.CreatedAt, &article.UpdatedAt)
