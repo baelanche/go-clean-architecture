@@ -1,5 +1,9 @@
-### Directory
+### Layer
+1. handler
+2. usecase
+3. repository
 
+### Directory
 ```
 project
 - app
@@ -7,8 +11,8 @@ project
  - docker
 - docs
 - internal
- - controller
  - domain
+ - handler
  - repository
  - usecase
 - test
@@ -16,13 +20,17 @@ project
  - usecase
 ```
 
-### Layer
+### Test
+```sh
+goconvey
+```
 
-1. handler(=controller)
-2. usecase
-3. repository
-
-### RUN
+### Run
 ```sh
 ./start.sh
+```
+
+### Swagger
+```
+http://localhost:8080/swagger/index.html
 ```

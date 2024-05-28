@@ -2,22 +2,22 @@ package test
 
 import (
 	"errors"
-	"go-clean-architecture/internal/domain"
+	"go-clean-architecture/internal/model"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-type MockArticleRepository struct {
-	articles []domain.Article
+type MockArticleMySqlRepository struct {
+	articles []model.Article
 }
 
-func (m *MockArticleRepository) Create(article *domain.Article) (*domain.Article, error) {
+func (m *MockArticleMySqlRepository) Create(article *model.Article) (*model.Article, error) {
 	m.articles = append(m.articles, *article)
 	return article, nil
 }
 
-func (m *MockArticleRepository) GetById(title string) (*domain.Article, error) {
+func (m *MockArticleMySqlRepository) GetById(title string) (*model.Article, error) {
 	for _, article := range m.articles {
 		if article.Title == title {
 			return &article, nil
@@ -26,11 +26,11 @@ func (m *MockArticleRepository) GetById(title string) (*domain.Article, error) {
 	return nil, errors.New("Article not found")
 }
 
-func (m *MockArticleRepository) GetAll() ([]domain.Article, error) {
+func (m *MockArticleMySqlRepository) GetAll() ([]model.Article, error) {
 	return m.articles, nil
 }
 
-func (m *MockArticleRepository) Update(title string, updatedArticle *domain.Article) (*domain.Article, error) {
+func (m *MockArticleMySqlRepository) Update(title string, updatedArticle *model.Article) (*model.Article, error) {
 	for i, article := range m.articles {
 		if article.Title == title {
 			m.articles[i] = *updatedArticle
@@ -41,7 +41,7 @@ func (m *MockArticleRepository) Update(title string, updatedArticle *domain.Arti
 	return nil, errors.New("Article not found")
 }
 
-func (m *MockArticleRepository) Delete(title string) error {
+func (m *MockArticleMySqlRepository) Delete(title string) error {
 	for i, article := range m.articles {
 		if article.Title == title {
 			m.articles = append(m.articles[:i], m.articles[i+1:]...)
@@ -52,10 +52,10 @@ func (m *MockArticleRepository) Delete(title string) error {
 }
 
 func TestArticle(t *testing.T) {
-	repo := &MockArticleRepository{}
+	repo := &MockArticleMySqlRepository{}
 
 	t.Run("Create", func(t *testing.T) {
-		article := &domain.Article{Title: "new", Body: "body", UserName: "user"}
+		article := &model.Article{Title: "new", Body: "body", UserName: "user"}
 		createdArticle, err := repo.Create(article)
 		assert.NoError(t, err, "Expected no error")
 		assert.NotNil(t, createdArticle, "Expected created article not to be nil")
@@ -77,7 +77,7 @@ func TestArticle(t *testing.T) {
 	})
 
 	t.Run("Update", func(t *testing.T) {
-		article := &domain.Article{Title: "update", Body: "body", UserName: "user"}
+		article := &model.Article{Title: "update", Body: "body", UserName: "user"}
 		updatedArticle, err := repo.Update("new", article)
 		assert.NoError(t, err, "Expected no error")
 		assert.NotNil(t, updatedArticle, "Expected article not to be nil")

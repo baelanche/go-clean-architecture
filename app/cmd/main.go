@@ -3,12 +3,12 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"go-clean-architecture/internal/repository/mysql"
 	"net/http"
 	"os"
 
-	_articleController "go-clean-architecture/internal/controller"
-	_articleUseCase "go-clean-architecture/internal/usecase"
+	handler "go-clean-architecture/internal/handler"
+	"go-clean-architecture/internal/repository/mysql"
+	usecase "go-clean-architecture/internal/usecase"
 
 	httpSwagger "github.com/swaggo/http-swagger"
 
@@ -42,9 +42,7 @@ func main() {
 
 	defer db.Close()
 
-	articleRepository := mysql.NewArticleMySqlRepository(db)
-	articleUseCase := _articleUseCase.NewArticleUseCase(articleRepository)
-	_articleController.NewArticleController(router, articleUseCase)
+	handler.NewArticleHandler(router, usecase.NewArticleService(mysql.NewArticleMySqlRepository(db)))
 
 	router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 
