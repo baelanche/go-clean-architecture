@@ -11,7 +11,7 @@ project
  - docker
 - docs
 - internal
- - domain
+ - model
  - handler
  - repository
  - usecase
